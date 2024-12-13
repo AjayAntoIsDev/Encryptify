@@ -47,7 +47,7 @@ export function NewPaste() {
         }
 
         if (doShorten.checked) {
-            fetch("https://backend.encryptify.floppy.us.kg/paste", {
+            fetch("https://encryptifyapi.floppy.us.kg/paste", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

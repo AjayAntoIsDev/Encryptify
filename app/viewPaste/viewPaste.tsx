@@ -20,7 +20,7 @@ export function ViewPaste() {
 
     async function getMessage(id: string) {
         const response = await fetch(
-            `https://backend.encryptify.floppy.us.kg/paste/${id}`
+            `https://encryptifyapi.floppy.us.kg/paste/${id}`
         );
         const data = await response.json();
         return [data.message, data.encrypted];
