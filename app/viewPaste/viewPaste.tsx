@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router";
-import Loading from "~/Loading";
-import Modal from "~/Modal";
-import AES128 from "~/utils/aes128";
+import Loading from "../Loading";
+import Modal from "../Modal";
+import AES128 from "..//utils/aes128";
 
 export function ViewPaste() {
     const [searchParams] = useSearchParams();

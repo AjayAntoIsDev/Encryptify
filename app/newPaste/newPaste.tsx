@@ -1,7 +1,7 @@
 import { useState } from "react";
-import AES128 from "~/utils/aes128";
-import Modal from "~/Modal";
-import Loading from "~/Loading";
+import AES128 from "../utils/aes128";
+import Modal from "../Modal";
+import Loading from "..//Loading";
 
 export function NewPaste() {
     const [isChecked, setIsChecked] = useState<boolean>(true);
