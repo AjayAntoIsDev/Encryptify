@@ -1,8 +1,180 @@
+import { useState } from "react";
+import AES128 from "~/utils/aes128";
+import Modal from "~/Modal";
+import Loading from "~/Loading";
 
 export function NewPaste() {
-  return (
-    <main className="flex items-center justify-center pt-16 pb-4">
-      hi
-    </main>
-  );
+    const [isChecked, setIsChecked] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isSuccessFull, setIsSuccessFull] = useState<boolean>(false);
+    const [isUnSuccessFull, setIsUnSuccessFull] = useState<boolean>(false);
+
+    const [pasteUrl, setPasteUrl] = useState<string>("null");
+    const [error, setError] = useState<string>("error");
+
+    const [noPasswordModal, setNoPasswordModal] = useState(false);
+    const handleCheckboxChange = (event: any): void => {
+        setIsChecked(event.target.checked);
+    };
+
+    const handleSubmit = (event: any): void => {
+        event.preventDefault();
+        const encryptionCode = document.getElementById(
+            "encryption_code"
+        ) as HTMLInputElement;
+        const message = document.getElementById("message") as HTMLInputElement;
+        const doEncrypt = document.getElementById(
+            "encrypt-checkbox"
+        ) as HTMLInputElement;
+        const doShorten = document.getElementById(
+            "shorten-checkbox"
+        ) as HTMLInputElement;
+
+        console.log(
+            encryptionCode.value,
+            message.value,
+            doEncrypt.checked,
+            doShorten.checked
+        );
+
+        let finalMessage = message.value;
+        if (doEncrypt.checked) {
+            if (encryptionCode.value === "") {
+              setIsLoading(false)
+                setNoPasswordModal(true);
+                return;
+            }
+            const aes128 = new AES128(encryptionCode.value);
+            finalMessage = aes128.encrypt(message.value);
+        }
+        fetch("http://localhost:3000/paste", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                message: finalMessage,
+                encrypted: true,
+                url: Math.random().toString(36).substring(2, 6),
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setPasteUrl(data.url);
+                setIsSuccessFull(true);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+          setIsLoading(false)
+    };
+
+    
+    return (
+        <main className="flex items-center justify-center p-10 h-screen">
+            <Loading open={isLoading}></Loading>
+
+            <div className="w-full h-full grid grid-cols-4 grid-rows-1 gap-5">
+                <div className="bg-surface-a10 rounded-3xl col-span-3">
+                    <textarea
+                        id="message"
+                        className="w-full h-full resize-none bg-surface-a10 rounded-3xl p-5 focus:outline-1 focus:outline-surface-a20"
+                        placeholder="Type anything :)"></textarea>
+                </div>
+
+                <div className="p-10">
+                    <div>
+                        <div className="flex items-center justify-start gap-10">
+                            <p>Encrypt Paste</p>
+                            <input
+                                defaultChecked
+                                id="encrypt-checkbox"
+                                type="checkbox"
+                                value=""
+                                className="w-4 h-4 accent-primary-a20"
+                                onChange={handleCheckboxChange}
+                            />
+                        </div>
+                        <input
+                            type="text"
+                            id="encryption_code"
+                            className={`mt-3 bg-surface-a10 border border-surface-a20 text-sm rounded-lg focus:ring-surface-a30 focus:outline-surface-a30 block w-full p-2.5 ${
+                                !isChecked
+                                    ? "opacity-50 cursor-not-allowed"
+                                    : ""
+                            }`}
+                            placeholder="Encryption Code"
+                            required
+                            disabled={!isChecked}
+                        />
+                    </div>
+
+                    <div className="mt-8">
+                        <div className="flex items-center justify-start gap-10">
+                            <p>Shorten Link</p>
+                            <input
+                                defaultChecked
+                                id="shorten-checkbox"
+                                type="checkbox"
+                                value=""
+                                className="w-4 h-4 accent-primary-a20"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="mt-8">
+                        <button
+                            className="p-3 w-full rounded-xl bg-primary-a20 font-bold text-lg"
+                            onClick={() => {
+                                setIsLoading(true);
+                                handleSubmit(event);
+                            }}>
+                            Create Paste
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <Modal
+                open={noPasswordModal}
+                onClose={() => setNoPasswordModal(false)}>
+                <div className="text-center w-64 flex flex-col">
+                    <p className="text-red-500 font-bold text-2xl self-start">
+                        Error
+                    </p>
+                    <p className="text-gray-200 font-normal self-start mt-2">
+                        Please enter an encryption code
+                    </p>
+                </div>
+            </Modal>
+
+            <Modal open={isSuccessFull} onClose={() => setIsSuccessFull(false)}>
+                <div className="text-center w-auto flex flex-col p-5">
+                    <p className="text-green-500 font-bold text-2xl self-start">
+                        Paste Created!
+                    </p>
+                    <p className="text-gray-200 font-normal self-start mt-2 text-xl">
+                        Your Paste is available at{" "}
+                        <a
+                            href="https://localhost:3000/paste/{pasteUrl}"
+                            className="text-blue-400">
+                            https://localhost:3000/paste/{pasteUrl}
+                        </a>
+                    </p>
+                </div>
+            </Modal>
+
+            <Modal open={isUnSuccessFull} onClose={() => setIsUnSuccessFull(false)}>
+                <div className="text-center w-auto flex flex-col p-5">
+                    <p className="text-green-500 font-bold text-2xl self-start">
+                        Error!
+                    </p>
+                    <p className="text-gray-200 font-normal self-start mt-2 text-xl">
+                        Your Paste is available at{" "}
+                    </p>
+                </div>
+            </Modal>
+        </main>
+    );
 }

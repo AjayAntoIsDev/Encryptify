@@ -4,9 +4,33 @@
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+    /** Dark theme primary colors */
+    --clr-primary-a0: #8522fe;
+    --clr-primary-a10: #9743ff;
+    --clr-primary-a20: #a85dff;
+    --clr-primary-a30: #b775ff;
+    --clr-primary-a40: #c58cff;
+    --clr-primary-a50: #d2a3ff;
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
+    /** Dark theme surface colors */
+    --clr-surface-a0: #121212;
+    --clr-surface-a10: #282828;
+    --clr-surface-a20: #3f3f3f;
+    --clr-surface-a30: #575757;
+    --clr-surface-a40: #717171;
+    --clr-surface-a50: #8b8b8b;
+
+    /** Dark theme tonal surface colors */
+    --clr-surface-tonal-a0: #1e1726;
+    --clr-surface-tonal-a10: #332c3a;
+    --clr-surface-tonal-a20: #494350;
+    --clr-surface-tonal-a30: #615b67;
+    --clr-surface-tonal-a40: #79747e;
+    --clr-surface-tonal-a50: #928e97;
+
+    @apply bg-primaryDark dark:bg-primaryDark;
+
+    @media (prefers-color-scheme: dark) {
+        color-scheme: dark;
+    }
 }
