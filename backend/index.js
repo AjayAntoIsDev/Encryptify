@@ -5,7 +5,7 @@ import rateLimit from "express-rate-limit";
 import cors from "cors"; // Import CORS
 
 const app = express();
-const port = 3000;
+const port = 8590;
 
 // Middleware to handle CORS
 app.use(cors()); // This will allow all domains by default
