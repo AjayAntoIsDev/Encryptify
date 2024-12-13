@@ -21,7 +21,7 @@ class AES128 {
         return ciphertext;
     }
 
-    decrypt(ciphertext: string): string {
+    decrypt(ciphertext: string): any {
         const key = CryptoJS.PBKDF2(
             this.password,
             CryptoJS.enc.Utf8.parse("salt"),
@@ -38,7 +38,7 @@ class AES128 {
 
             return decryptedText;
         } catch (error) {
-            return "Wrong password or corrupted data.";
+            return false;
         }
     }
 }

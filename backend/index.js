@@ -86,11 +86,7 @@ app.get("/paste/:url", getLimiter, async (req, res) => {
         return res.status(404).json({ error: "Paste not found" });
     }
 
-    // Return the paste message (decrypted if necessary)
-    const responseMessage = paste.encrypted
-        ? "This paste is encrypted"
-        : paste.message;
-    res.status(200).json({ message: responseMessage });
+    res.status(200).json(paste);
 });
 
 // Start the server

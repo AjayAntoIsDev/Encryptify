@@ -47,7 +47,7 @@ export function NewPaste() {
         }
 
         if (doShorten.checked) {
-            fetch("http://localhost:3000/paste", {
+            fetch("https://backend.encryptify.floppy.us.kg/paste", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export function NewPaste() {
                 .then((response) => response.json())
                 .then((data) => {
                     console.log(data);
-                    setPasteUrl(data.url);
+                    setPasteUrl("?id=" + data.url);
                     setIsSuccessFull(true);
                 })
                 .catch((error) => {
@@ -167,9 +167,12 @@ export function NewPaste() {
                     <p className="text-gray-200 font-normal self-start mt-2 text-xl text-start w-full">
                         Your Paste is available at{" "}
                         <a
-                            href={"https://localhost:3000/paste/"+pasteUrl}
+                            href={
+                                "https://encryptify.floppy.us.kg/paste" +
+                                pasteUrl
+                            }
                             className="text-blue-400 w-full">
-                            {"https://localhost:3000/paste/"+pasteUrl}
+                            {"https://encryptify.floppy.us.kg/paste" + pasteUrl}
                         </a>
                     </p>
                 </div>
