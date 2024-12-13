@@ -16,9 +16,7 @@ export function NewPaste() {
     const handleCheckboxChange = (event: any): void => {
         setIsChecked(event.target.checked);
     };
-
     const handleSubmit = (event: any): void => {
-        event.preventDefault();
         const encryptionCode = document.getElementById(
             "encryption_code"
         ) as HTMLInputElement;
@@ -40,37 +38,47 @@ export function NewPaste() {
         let finalMessage = message.value;
         if (doEncrypt.checked) {
             if (encryptionCode.value === "") {
-              setIsLoading(false)
+                setIsLoading(false);
                 setNoPasswordModal(true);
                 return;
             }
             const aes128 = new AES128(encryptionCode.value);
             finalMessage = aes128.encrypt(message.value);
         }
-        fetch("http://localhost:3000/paste", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                message: finalMessage,
-                encrypted: true,
-                url: Math.random().toString(36).substring(2, 6),
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                setPasteUrl(data.url);
-                setIsSuccessFull(true);
+
+        if (doShorten.checked) {
+            fetch("http://localhost:3000/paste", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    message: finalMessage,
+                    encrypted: doEncrypt.checked,
+                    url: Math.random().toString(36).substring(2, 6),
+                }),
             })
-            .catch((error) => {
-                console.error(error);
-            });
-          setIsLoading(false)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    setPasteUrl(data.url);
+                    setIsSuccessFull(true);
+                })
+                .catch((error) => {
+                    setIsUnSuccessFull(true);
+                    setError(error.message);
+                    console.error(error);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        } else {
+            setPasteUrl("?data=" +btoa(finalMessage + "|||" + doEncrypt.checked));
+            setIsSuccessFull(true)
+            setIsLoading(false);
+        }
     };
 
-    
     return (
         <main className="flex items-center justify-center p-10 h-screen">
             <Loading open={isLoading}></Loading>
@@ -128,7 +136,9 @@ export function NewPaste() {
                             className="p-3 w-full rounded-xl bg-primary-a20 font-bold text-lg"
                             onClick={() => {
                                 setIsLoading(true);
-                                handleSubmit(event);
+                                setTimeout(() => {
+                                    handleSubmit(event);
+                                }, 500);
                             }}>
                             Create Paste
                         </button>
@@ -154,27 +164,31 @@ export function NewPaste() {
                     <p className="text-green-500 font-bold text-2xl self-start">
                         Paste Created!
                     </p>
-                    <p className="text-gray-200 font-normal self-start mt-2 text-xl">
+                    <p className="text-gray-200 font-normal self-start mt-2 text-xl text-start w-full">
                         Your Paste is available at{" "}
                         <a
-                            href="https://localhost:3000/paste/{pasteUrl}"
-                            className="text-blue-400">
-                            https://localhost:3000/paste/{pasteUrl}
+                            href={"https://localhost:3000/paste/"+pasteUrl}
+                            className="text-blue-400 w-full">
+                            {"https://localhost:3000/paste/"+pasteUrl}
                         </a>
                     </p>
                 </div>
             </Modal>
 
-            <Modal open={isUnSuccessFull} onClose={() => setIsUnSuccessFull(false)}>
+            <Modal
+                open={isUnSuccessFull}
+                onClose={() => setIsUnSuccessFull(false)}>
                 <div className="text-center w-auto flex flex-col p-5">
-                    <p className="text-green-500 font-bold text-2xl self-start">
+                    <p className="text-red-500 font-bold text-2xl self-start">
                         Error!
                     </p>
                     <p className="text-gray-200 font-normal self-start mt-2 text-xl">
-                        Your Paste is available at{" "}
+                        {error}
                     </p>
                 </div>
             </Modal>
+
+            <Loading open={isLoading}></Loading>
         </main>
     );
 }
