@@ -81,7 +81,7 @@ export function ViewPaste() {
     }, [id, data]); // Runs whenever `id` or `data` changes
 
     return (
-        <div className="p-10 h-screen">
+        <div className="p-10 pt-0 h-full">
             <Loading open={isLoading}></Loading>
             <div className="w-full h-full ">
                 <div className="bg-surface-a10 rounded-3xl h-full">

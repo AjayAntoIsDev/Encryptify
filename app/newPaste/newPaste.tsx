@@ -80,7 +80,7 @@ export function NewPaste() {
     };
 
     return (
-        <main className="flex items-center justify-center p-10 h-screen">
+        <main className="flex items-center justify-center p-10 pt-0 h-full">
             <Loading open={isLoading}></Loading>
 
             <div className="w-full h-full grid grid-cols-4 grid-rows-1 gap-5">
