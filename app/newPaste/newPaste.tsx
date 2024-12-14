@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AES128 from "../utils/aes128";
+import AES256 from "../utils/aes256";
 import Modal from "../Modal";
 import Loading from "..//Loading";
 
@@ -42,8 +42,8 @@ export function NewPaste() {
                 setNoPasswordModal(true);
                 return;
             }
-            const aes128 = new AES128(encryptionCode.value);
-            finalMessage = aes128.encrypt(message.value);
+            const aes256 = new AES256(encryptionCode.value);
+            finalMessage = aes256.encrypt(message.value);
         }
 
         if (doShorten.checked) {

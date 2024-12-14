@@ -1,7 +1,6 @@
-// src/utils/AES128.ts
 import CryptoJS from "crypto-js";
 
-class AES128 {
+class AES256 {
     private password: string;
 
     constructor(password: string) {
@@ -12,7 +11,7 @@ class AES128 {
         const key = CryptoJS.PBKDF2(
             this.password,
             CryptoJS.enc.Utf8.parse("salt"),
-            { keySize: 128 / 32 } // Changed key size to 128 bits (16 bytes)
+            { keySize: 256 / 32 }
         ).toString(CryptoJS.enc.Hex);
 
         // Encrypt the data
@@ -25,7 +24,7 @@ class AES128 {
         const key = CryptoJS.PBKDF2(
             this.password,
             CryptoJS.enc.Utf8.parse("salt"),
-            { keySize: 128 / 32 } // Changed key size to 128 bits (16 bytes)
+            { keySize: 256 / 32 } 
         ).toString(CryptoJS.enc.Hex);
 
         try {
@@ -43,4 +42,4 @@ class AES128 {
     }
 }
 
-export default AES128;
+export default AES256;

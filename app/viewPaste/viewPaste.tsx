@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router";
 import Loading from "../Loading";
 import Modal from "../Modal";
-import AES128 from "..//utils/aes128";
+import AES256 from "../utils/aes256";
 
 export function ViewPaste() {
     const [searchParams] = useSearchParams();
@@ -28,10 +28,10 @@ export function ViewPaste() {
 
     function decryptMessage(message: string, password: string) {
         setOpen(false);
-        const aes128 = new AES128(password);
+        const aes256 = new AES256(password);
         console.log(message);
         console.log(password);
-        const decryptedMessage = aes128.decrypt(message);
+        const decryptedMessage = aes256.decrypt(message);
         setIsLoading(false);
         if (!decryptedMessage) {
             setOpen(false);
