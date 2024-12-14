@@ -81,7 +81,7 @@ export function ViewPaste() {
     }, [id, data]); // Runs whenever `id` or `data` changes
 
     return (
-        <div className="p-10 pt-0 h-full">
+        <div className="p-10 pt-0  h-[90vh]">
             <Loading open={isLoading}></Loading>
             <div className="w-full h-full ">
                 <div className="bg-surface-a10 rounded-3xl h-full">
@@ -95,7 +95,7 @@ export function ViewPaste() {
             <div
                 id="password"
                 className={`
-                    fixed inset-0 flex justify-center items-center transition-colors
+                    fixed inset-0 flex justify-center items-center transition-colors h-[99vh]
                     ${open ? "visible bg-black/20" : "invisible"}
                 `}>
                 <div

@@ -80,11 +80,11 @@ export function NewPaste() {
     };
 
     return (
-        <main className="flex items-center justify-center p-10 pt-0 h-full">
+        <main className="flex items-center justify-center p-10 pt-0 h-[90vh]">
             <Loading open={isLoading}></Loading>
 
-            <div className="w-full h-full grid grid-cols-4 grid-rows-1 gap-5">
-                <div className="bg-surface-a10 rounded-3xl col-span-3">
+            <div className="w-full h-full grid md:grid-cols-4 md:grid-rows-1 gap-5 grid-cols-1 grid-rows-3">
+                <div className="bg-surface-a10 rounded-3xl md:col-span-3 row-span-2">
                     <textarea
                         id="message"
                         className="w-full h-full resize-none bg-surface-a10 rounded-3xl p-5 focus:outline-1 focus:outline-surface-a20"
@@ -165,14 +165,14 @@ export function NewPaste() {
                         Paste Created!
                     </p>
                     <p className="text-gray-200 font-normal self-start mt-2 text-xl text-start w-full">
-                        Your Paste is available at{" "}
+                        Your Paste is available <wbr></wbr>
                         <a
                             href={
                                 "https://encryptify.floppy.us.kg/paste" +
                                 pasteUrl
                             }
                             className="text-blue-400 w-full">
-                            {"https://encryptify.floppy.us.kg/paste" + pasteUrl}
+                            here
                         </a>
                     </p>
                 </div>

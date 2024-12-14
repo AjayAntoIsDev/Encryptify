@@ -10,7 +10,7 @@ export default function Loading({ open }: LoadingProps) {
         <div
             id="Loading"
             className={`
-        fixed inset-0 flex justify-center items-center transition-colors
+        fixed inset-0 flex justify-center items-center transition-colors h-[99vh]
         ${open ? "visible bg-black/20" : "invisible"}
       `}>
             <div
