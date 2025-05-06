@@ -47,7 +47,7 @@ export function NewPaste() {
         }
 
         if (doShorten.checked) {
-            fetch("https://encryptifyapi.floppy.us.kg/paste", {
+            fetch("https://encryptifyapi.ajayanto.me/paste", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -168,7 +168,7 @@ export function NewPaste() {
                         Your Paste is available <wbr></wbr>
                         <a
                             href={
-                                "https://encryptify.floppy.us.kg/paste" +
+                                "https://encryptify.ajayanto.me/paste" +
                                 pasteUrl
                             }
                             className="text-blue-400 w-full">
